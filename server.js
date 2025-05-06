@@ -5,18 +5,21 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
+app.use(cors());
+
 // Routes
 app.use("/api", authRoutes);
 
 // Protected routes
 app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({ message: `Skyddad route åtkomst beviljad för användare ${req.user.username}` });
+    res.json({ message: `Välkommen ${req.user.username}` });
 });
 
 // Validate Token
