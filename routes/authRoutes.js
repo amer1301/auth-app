@@ -42,33 +42,28 @@ router.post("/register", async (req, res) => {
 });
 
 
-// Login user
 router.post("/login", async(req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Validera input
         if(!username || !password) {
-            return res.status(400).json({error: "Invalid input, send username and password"});
+            return res.status(400).json({error: "Felaktig inmatning - ange både användarnamn och lösenord."});
         }
-        // Check credentials
 
-        // Does user exist?
         const user = await User.findOne( {username });
         if(!user) {
-            return res.status(401).json({ error : "Incorrect username/password!" });
+            return res.status(401).json({ error : "Ogiltigt användarnamn!" });
         }
 
-        // Check password
         const isPasswordMatch = await user.comparePassword(password);
         if(!isPasswordMatch) {
-            return res.status(401).json({ error : "Incorrect username/password!" });
+            return res.status(401).json({ error : "Ogiltigt lösenord!" });
         } else {
-            // create JWT
+
             const payload = { username: username };
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
             const response = {
-                message: "User logged in!",
+                message: "Användare inloggad!",
                 token: token,
                 created: user.created,
             }
@@ -76,9 +71,8 @@ router.post("/login", async(req, res) => {
         }
 
     } catch(error) {
-        res.status(500).json({ error: "Server error"});
+        res.status(500).json({ error: "Fel uppstod på servern"});
     }
-    console.log("Login called...");
 });
 
 module.exports = router;
