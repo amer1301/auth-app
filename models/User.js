@@ -32,7 +32,6 @@ userSchema.pre("save", async function (next) {
     }
 });
 
-// Register user
 userSchema.statics.register = async function (username, password) {
     try {
         const user = new this({ username, password });
@@ -43,7 +42,7 @@ userSchema.statics.register = async function (username, password) {
     }
 };
 
-// Compare hashed passwords
+// Jämför hashed passwords
 userSchema.methods.comparePassword = async function (password) {
     try {
         return await bcrypt.compare(password, this.password);
@@ -52,23 +51,20 @@ userSchema.methods.comparePassword = async function (password) {
     }
 }
 
-// Login user
 userSchema.statics.login = async function (username, password) {
     try {
         const user = await this.findOne({ username });
 
         if (!user) {
-            throw new Error("Incorrect username/password!");
+            throw new Error("Felaktigt användarnamn!");
         }
 
         const isPasswordMatch = await user.comparePassword(password);
 
-        // Incorrect?
         if (!isPasswordMatch) {
-            throw new Error("Incorrect username/password!");
+            throw new Error("Felaktigt lösenord!");
         }
 
-        // Correct
         return user;
 
     } catch (error) {

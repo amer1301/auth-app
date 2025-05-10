@@ -17,23 +17,23 @@ app.use(cors());
 // Routes
 app.use("/api", authRoutes);
 
-// Protected routes
+// Skyddad routes
 app.get("/api/protected", authenticateToken, (req, res) => {
     res.json({ message: `Välkommen ${req.user.username}` });
 });
 
-// Validate Token
+// Validera Token
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if (token == null) {
-        return res.status(401).json({ message: "Not authorized for this route - token missing!" });
+        return res.status(401).json({ message: "Du har inte behörighet att visa denna sida – inloggning krävs." });
     }
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, payload) => {
         if (err) {
-            return res.status(403).json({ message: "Not valid JWT" });
+            return res.status(403).json({ message: "Ogiltig JWT" });
         }
 
         // Lägg till användardata i request-objektet

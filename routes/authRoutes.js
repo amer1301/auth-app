@@ -1,5 +1,5 @@
 /**
- * Routes for auth
+ * Routes för auktorisation
  */
 const express = require("express");
 const router = express.Router();
@@ -7,12 +7,12 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// Connect to MongoDB
+// Anslut till MongoDB
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.DATABASE).then(() => {
-console.log("Connected to MongoDB");
+console.log("Ansluten till MongoDB");
 }).catch((error) => {
-    console.error("Error connecting to database...");
+    console.error("Problem vid anslutning till MongoDB...");
 });
 
 // User model
@@ -25,18 +25,18 @@ router.post("/register", async (req, res) => {
 
         // Validera input
         if (!username || !password) {
-            return res.status(400).json({ error: "Invalid input, send username and password" });
+            return res.status(400).json({ error: "Felaktig inmatning - ange både användarnamn och lösenord." });
         }
 
         const user = await User.register(username, password);
 
-        res.status(201).json({ message: "User created" });
+        res.status(201).json({ message: "Användare skapad" });
 
     } catch (error) {
         if (error.code === 11000) {
-            res.status(409).json({ error: "Username already exists" });
+            res.status(409).json({ error: "Användarnamn finns redan" });
         } else {
-            res.status(500).json({ error: "Server error" });
+            res.status(500).json({ error: "Fel uppstod på servern" });
         }
     }
 });
