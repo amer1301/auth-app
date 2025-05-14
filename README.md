@@ -5,10 +5,11 @@ Detta projekt är en enkel användarautentiseringstjänst byggd med **Node.js**,
 ## API-dokumentation (URI:er)
 Alla endpoints prefixas med /api.
 
-Metod	Endpoint	Beskrivning
-POST	/api/register	Registrerar en ny användare
-POST	/api/login	Loggar in en användare och returnerar token
-GET	/api/protected	Returnerar skyddad data (kräver JWT-token)
+| Metod | Endpoint                       | Beskrivning                                 |
+|-------|--------------------------------|---------------------------------------------|
+| POST   | `/api/register`               | Registrerar en ny användare                 |
+| POST   | `/api/login`                  | Loggar in en användare och returnerar token |
+| GET    | `	/api/protected`            | Returnerar skyddad data (kräver JWT-token)  |
 
 ## Exempel: Registrera användare
 POST /api/register
@@ -46,6 +47,6 @@ Svar:
 { "message": "Välkommen testuser" }
 
 ## Säkerhet
-Lösenord sparas aldrig i klartext (hashas med bcrypt).
-JWT-token är tidsbegränsad (1h).
-Endast skyddade rutter kräver token.
+- Lösenord sparas aldrig i klartext (hashas med bcrypt).
+- JWT-token är tidsbegränsad (1h).
+- Endast skyddade rutter kräver token.
